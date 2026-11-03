@@ -1,0 +1,2 @@
+[console_scripts]
+hallucination-pmi-ensemble = hallucination_pmi_ensemble.cli:main

@@ -1,0 +1,56 @@
+{
+  "model_name": "pmi_plus_length_control_precision60_stacker",
+  "model_version": "2026-09-tokenfix-length-control",
+  "task": "Binary hallucination-risk classification for Q/A pairs from precomputed detector features.",
+  "features": [
+    "likelihood_risk",
+    "likelihood_token_count_log",
+    "contradiction_risk",
+    "finch_risk"
+  ],
+  "selected_c": 0.01,
+  "threshold": 0.4371241698739282,
+  "oof_auroc": 0.7662222222222221,
+  "oof_auprc": 0.7309733505173591,
+  "coefficients": {
+    "likelihood_risk": 0.1853931084676044,
+    "likelihood_token_count_log": 0.3490728100702908,
+    "contradiction_risk": 0.2907177053713174,
+    "finch_risk": 0.2354834984098035
+  },
+  "scaler_mean": {
+    "likelihood_risk": -3.216195727575287,
+    "likelihood_token_count_log": 2.5194452150629276,
+    "contradiction_risk": 0.44500647779245933,
+    "finch_risk": 0.5674722222222223
+  },
+  "scaler_scale": {
+    "likelihood_risk": 3.291966426543604,
+    "likelihood_token_count_log": 0.7886714822725205,
+    "contradiction_risk": 0.44769770275851734,
+    "finch_risk": 0.47817586430381015
+  },
+  "intercept": -0.006547418434925168,
+  "threshold_calibration": {
+    "policy": "max_f1_subject_to_precision_floor",
+    "target_precision": 0.6,
+    "validation_rows": 600,
+    "selected_metrics": {
+      "accuracy": 0.6933333333333334,
+      "precision": 0.6518324607329843,
+      "recall": 0.83,
+      "f1": 0.7302052785923754,
+      "positive_predictions": 382
+    }
+  },
+  "held_out_summary": {
+    "rows": 1500,
+    "accuracy": 0.67,
+    "precision": 0.631307929969104,
+    "recall": 0.8173333333333334,
+    "f1": 0.7123765252760024,
+    "auroc": 0.7397635555555556,
+    "auprc": 0.6972166269837028,
+    "confusion_matrix": [[392, 358], [137, 613]]
+  }
+}

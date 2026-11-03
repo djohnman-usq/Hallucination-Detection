@@ -1,0 +1,70 @@
+# PMI + Length-Control Hallucination Stacker
+
+Standalone frozen decision model for hallucination-risk classification on Q/A pairs.
+
+This package applies the final validation-calibrated stacker from the thesis project. It expects precomputed detector features and does not download or run the Qwen/DeBERTa detector models.
+
+## Model Inputs
+
+The input CSV must contain:
+
+- `likelihood_risk`: token-fixed Conditional PMI risk, computed as `NLLq(a) - NLL0(a)`.
+- `likelihood_token_count_log`: `log(1 + T)`, where `T` is the scored answer-token count.
+- `contradiction_risk`: response-level self-contradiction risk.
+- `finch_risk`: FINCH-style cross-prompt consistency risk.
+
+Optional columns used for evaluation and charts:
+
+- `label`: `0` factual, `1` hallucinated.
+- `dataset_name`: reporting context.
+- `likelihood_vote`, `contradiction_vote`, `finch_vote`: base-detector threshold decisions.
+
+## Install
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+On Linux/macOS, use `source .venv/bin/activate`.
+
+## Run
+
+```bash
+python -m hallucination_pmi_ensemble.cli ^
+  --input path\to\features.csv ^
+  --output-dir outputs\standalone_full_output ^
+  --prefix standalone_full_output
+```
+
+The command writes:
+
+- `*_predictions.csv`
+- `*_metrics.json`
+- `*_confusion.csv`
+- `visuals/detector_comparison.png`
+- `visuals/ensemble_per_dataset.png`
+- `visuals/confusion_matrices.png`
+- `visuals/risk_score_distributions.png`
+- `visuals/f1_by_context.png`
+- `visuals/held_out_detector_summary.csv`
+
+## Frozen Model
+
+The default runtime artifact is packaged at `hallucination_pmi_ensemble/artifacts/pmi_plus_length_control_precision60_stacking_model.json`. A top-level copy is also provided at `artifacts/pmi_plus_length_control_precision60_stacking_model.json` for easy inspection.
+
+Held-out thesis result on 1,500 balanced rows:
+
+- Accuracy: `0.670`
+- Precision: `0.631`
+- Recall: `0.817`
+- F1: `0.712`
+- AUROC: `0.740`
+- AUPRC: `0.697`
+
+The threshold is `0.4371241698739282`, selected on validation out-of-fold predictions by maximizing F1 subject to precision >= 0.60.
+
+## Scope
+
+This is a review-prioritisation model, not a certified fact checker. It predicts risk from behavioural detector features and does not retrieve external evidence.
