@@ -1,8 +1,8 @@
 # PMI + Length-Control Hallucination Stacker
 
-Standalone frozen decision model for hallucination-risk classification on Q/A pairs.
+Standalone frozen decision model for hallucination risk classification on Q/A pairs.
 
-This package applies the final validation-calibrated stacker from the thesis project. It expects precomputed detector features and does not download or run the Qwen/DeBERTa detector models.
+This package applies the final validation-calibrated stacker from the hallucination detection project. It expects precomputed detector features and does not download or run the Qwen/DeBERTa detector models.
 
 ## Model Inputs
 
@@ -10,8 +10,8 @@ The input CSV must contain:
 
 - `likelihood_risk`: token-fixed Conditional PMI risk, computed as `NLLq(a) - NLL0(a)`.
 - `likelihood_token_count_log`: `log(1 + T)`, where `T` is the scored answer-token count.
-- `contradiction_risk`: response-level self-contradiction risk.
-- `finch_risk`: FINCH-style cross-prompt consistency risk.
+- `contradiction_risk`: response level self contradiction risk.
+- `finch_risk`: FINCH cross prompt consistency risk.
 
 Optional columns used for evaluation and charts:
 
@@ -52,9 +52,9 @@ The command writes:
 
 ## Frozen Model
 
-The default runtime artifact is packaged at `hallucination_pmi_ensemble/artifacts/pmi_plus_length_control_precision60_stacking_model.json`. A top-level copy is also provided at `artifacts/pmi_plus_length_control_precision60_stacking_model.json` for easy inspection.
+The default runtime artifact is packaged at `hallucination_pmi_ensemble/artifacts/pmi_plus_length_control_precision60_stacking_model.json`. 
 
-Held-out thesis result on 1,500 balanced rows:
+Held out final result on 1,500 balanced rows:
 
 - Accuracy: `0.670`
 - Precision: `0.631`
@@ -63,8 +63,8 @@ Held-out thesis result on 1,500 balanced rows:
 - AUROC: `0.740`
 - AUPRC: `0.697`
 
-The threshold is `0.4371241698739282`, selected on validation out-of-fold predictions by maximizing F1 subject to precision >= 0.60.
+The threshold is `0.4371241698739282`, selected on validation out of fold predictions by maximizing F1 subject to precision >= 0.60.
 
 ## Scope
 
-This is a review-prioritisation model, not a certified fact checker. It predicts risk from behavioural detector features and does not retrieve external evidence.
+This is a detection flag model, not a certified fact checker. It predicts risk from behavioural detector features and does not retrieve external evidence.
